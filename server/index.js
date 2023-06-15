@@ -6,7 +6,6 @@ const http = require('http');
 const mongoose = require('mongoose');
 const connection = connect();
 
-// solo es un cambio
 
 const app = express();
 

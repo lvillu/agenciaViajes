@@ -65,10 +65,47 @@ const login = async (req, res, next) => {
         const match = await bcrypt.match(data.password, body.password)
 
         if (!match)
-        return res.status(401).send({
+            return res.status(401).send({
+                success: true,
+                data: {},
+                message: "Email o correo es incorrecto"
+            });
+
+        const accessToken = jwt.sign(
+            {
+                username: data.username,
+                _id: data._id
+            },
+            process.env.ACCESS_TOKEN_SECRET,
+            {
+                expiresIn: '18000s'
+            }
+        )
+
+        const refreshToken = jwt.sign(
+            {
+                username: data.username,
+                _id: data._id
+            },
+            process.env.REFRESH_TOKEN_SECRET,
+            {
+                expiresIn: '2d'
+            }
+        )
+
+        const newUser = await UserModel.findOneAndUpdate({_id : data.id}, {refreshToken : refreshToken}, {
+            new: true            
+        });
+
+        console.log("New User Data: ", newUser);
+
+        res.cookie('refresh_token', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000 });
+        return res.status(200).send({
             success: true,
-            data: {},
-            message: "Email o correo es incorrecto"
+            data: {
+                accessToken: accessToken
+            },
+            message: ""
         });
 
     } catch (err) {

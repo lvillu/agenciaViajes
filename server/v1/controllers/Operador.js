@@ -56,7 +56,7 @@ const agregarOperador =  async (req,res,next) => {
         return res.status(400).send({
             success: false,
             data: {},
-            message: "Not information send's"
+            message: "No se esta recibiendo informacion"
         });
 
     try{

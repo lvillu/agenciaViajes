@@ -62,13 +62,14 @@ const login = async (req, res, next) => {
                 message: "Usuario no encontrado"
             });
 
-        const match = await bcrypt.match(data.password, body.password)
+
+        const match = await bcrypt.compare(body.password, data.password)
 
         if (!match)
             return res.status(401).send({
                 success: true,
                 data: {},
-                message: "Email o correo es incorrecto"
+                message: "Email o password incorrecto"
             });
 
         const accessToken = jwt.sign(
@@ -109,7 +110,7 @@ const login = async (req, res, next) => {
         });
 
     } catch (err) {
-
+        console.log(err)
     }
 };
 

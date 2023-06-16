@@ -98,9 +98,13 @@ const login = async (req, res, next) => {
             new: true            
         });
 
-        console.log("New User Data: ", newUser);
+        //Con Front End
+        //res.cookie('refresh_token', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000, sameSite: 'None', secure: true });
 
+        //Con Postman
         res.cookie('refresh_token', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000 });
+
+
         return res.status(200).send({
             success: true,
             data: {
@@ -115,6 +119,31 @@ const login = async (req, res, next) => {
 };
 
 const logout = async (req, res, next) => {
+    const cookies = req.cookies;
+
+    if(!cookies.refresh_token) return res.sendStatus(204);
+
+    const refreshToken = cookies.refresh_token;
+    const user = await UserModel.findOne({refreshToken: refreshToken},{}).exec();
+
+    if(!user){
+        // Con Front End
+        // res.clearCookie("refresh_token", { httpOnly: true, sameSite: 'None', secure: true });
+
+        // Con Postman
+        res.clearCookie("refresh_token", { httpOnly: true });
+        return res.sendStatus(204);
+    }
+
+    user.refreshToken = null;
+    await user.save();
+
+    // Con Front End
+    // res.clearCookie("refresh_token", { httpOnly: true, sameSite: 'None', secure: true });
+
+    // Con Postman
+    res.clearCookie("refresh_token", { httpOnly: true });
+    return res.sendStatus(204);
 
 };
 

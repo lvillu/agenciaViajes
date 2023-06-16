@@ -6,6 +6,7 @@ const cors = require('cors');
 const http = require('http');
 const mongoose = require('mongoose');
 const connection = connect();
+const cookieParser = require('cookie-parser');
 
 
 const app = express();
@@ -13,6 +14,8 @@ const app = express();
 app.set('port', PORT);
 
 app.use(cors());
+app.use(cookieParser())
+
 
 app.use(express.json());
 

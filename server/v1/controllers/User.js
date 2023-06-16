@@ -148,11 +148,54 @@ const logout = async (req, res, next) => {
 };
 
 const refresh = async (req, res, next) => {
+    const cookies = req.cookies;
+    if(!cookies.refresh_token) return res.sendStatus(401);
+
+    const refreshToken = cookies.refresh_token;
+    const user = await UserModel.findOne({refreshToken: refreshToken},{}).exec();
+
+    if(!user) return res.sendStatus(403);
+
+    jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, decoded) => {
+            
+            if(err || user._id.toString() !== decoded._id) return res.sendStatus(403);
+
+            const accessToken = jwt.sign(
+                {
+                    username: decoded.username,
+                    _id: decoded._id
+                },
+                process.env.ACCESS_TOKEN_SECRET,
+                {
+                    expiresIn: '18000s'
+                }
+            )
+
+            return res.status(200).send({
+                success: true,
+                data: {
+                    accessToken: accessToken
+                },
+                message: ""
+            });
+        }
+    )
 
 };
 
 const user = async (req, res, next) => {
+    const user = req.user
 
+    return res.status(200).send({
+        success: true,
+        data: {
+            user
+        },
+        message: ""
+    });
 };
 
 

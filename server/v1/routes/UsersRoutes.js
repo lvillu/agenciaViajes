@@ -5,6 +5,7 @@ const router                = express.Router();
 
 
 const { UserCtrl }      = require('../controllers');
+const authMiddleware    = require('../../middleware/auth');
 
 /* POST Calls */
 
@@ -16,6 +17,6 @@ router.post('/usuarios/logout', UserCtrl.logout);
 
 router.post('/usuarios/refresh', UserCtrl.refresh);
 
-router.get('/usuarios/usuario', UserCtrl.user);
+router.get('/usuarios/usuario', authMiddleware, UserCtrl.user);
 
 module.exports = router;

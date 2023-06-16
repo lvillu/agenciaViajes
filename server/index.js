@@ -7,6 +7,8 @@ const http = require('http');
 const mongoose = require('mongoose');
 const connection = connect();
 const cookieParser = require('cookie-parser');
+const authenticationMiddleware = require('./middleware/authentication');
+
 
 
 const app = express();
@@ -14,8 +16,8 @@ const app = express();
 app.set('port', PORT);
 
 app.use(cors());
-app.use(cookieParser())
-
+app.use(cookieParser());
+app.use(authenticationMiddleware);
 
 app.use(express.json());
 

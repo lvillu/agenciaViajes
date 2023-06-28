@@ -15,7 +15,15 @@ const app = express();
 
 app.set('port', PORT);
 
-app.use(cors());
+
+const corsOpts = {
+    origin: [
+        'http://localhost:8081'
+    ],
+    credentials: true
+  };
+
+app.use(cors(corsOpts));
 app.use(cookieParser());
 app.use(authenticationMiddleware);
 

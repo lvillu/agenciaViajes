@@ -18,7 +18,8 @@ app.set('port', PORT);
 
 const corsOpts = {
     origin: [
-        'http://localhost:8081'
+        'http://localhost:8081',
+        'http://localhost:8080'
     ],
     credentials: true
   };

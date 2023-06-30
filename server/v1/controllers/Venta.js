@@ -1,16 +1,16 @@
 'use strict';
-const { OperadorModel }                  = require('../../models');
+const { VentaModel }                  = require('../../models');
 
-const obtenerOperadores =  async (req,res,next) => {
+const obtenerVentas =  async (req,res,next) => {
     try{
-        let data = await OperadorModel.find({activo:true},
+        let data = await VentaModel.find({activo:true},
             {_id:1,nombre:1, siglas:1}).sort({_id:1});
         
         if(!data || data.length == 0)
             return res.status(200).send({ 
                 success: true,
                 data: [],
-                message: "Operadores no encontrados"
+                message: "Ventas no encontradas"
             });
 
         return res.status(200).send({
@@ -24,17 +24,17 @@ const obtenerOperadores =  async (req,res,next) => {
     }
 };
 
-const obtenerOperador =  async (req,res,next) => {
-    const {operadorId}  = req.params;
+const obtenerVenta =  async (req,res,next) => {
+    const {VentaId}  = req.params;
     try{
-        let data = await OperadorModel.findOne({_id: operadorId},
+        let data = await VentaModel.findOne({_id: VentaId},
             {}).sort({ _id:1 });
 
         if(!data || data.length == 0)
             return res.status(200).send({ 
                 success: true,
                 data: {},
-                message: "Operador no encontrado"
+                message: "Venta no encontrada"
             });
 
         return res.status(200).send({
@@ -48,7 +48,7 @@ const obtenerOperador =  async (req,res,next) => {
     }
 };
 
-const agregarOperador =  async (req,res,next) => {
+const agregarVenta =  async (req,res,next) => {
     let body = req.body;
 
     if(Object.keys(body).length == 0) 
@@ -60,7 +60,7 @@ const agregarOperador =  async (req,res,next) => {
 
     try{
 
-        let data = await OperadorModel(body).save();
+        let data = await VentaModel(body).save();
         return res.status(201).send({
             success: true,
             data: data,
@@ -72,16 +72,16 @@ const agregarOperador =  async (req,res,next) => {
     }
 };
 
-const actualizarOperador = async(req,res,next) => {
+const actualizarVenta = async(req,res,next) => {
     let update    = req.body;
-    let {operadorId}= req.params;
-    let filter    = {_id:operadorId};
+    let {VentaId}= req.params;
+    let filter    = {_id:VentaId};
 
-    if(!operadorId){
+    if(!VentaId){
         return  res.status(400).send({
             success: false,
             data: {},
-            message:'Operador Id necesario'
+            message:'Venta Id necesario'
         });
     }
 
@@ -93,7 +93,7 @@ const actualizarOperador = async(req,res,next) => {
         });
 
     try{
-        let data = await OperadorModel.findOneAndUpdate(filter, update, {
+        let data = await VentaModel.findOneAndUpdate(filter, update, {
             new: true            
         });
      
@@ -103,7 +103,7 @@ const actualizarOperador = async(req,res,next) => {
             return res.status(404).send({
                 success: false,
                 data: {},
-                message:"Operador no encontrado"
+                message:"Venta no encontrada"
             });
         }
     }
@@ -112,25 +112,25 @@ const actualizarOperador = async(req,res,next) => {
     }
 };
 
-const eliminarOperador =  async (req,res,next) => {
-    const {operadorId}  = req.params;
+const eliminarVenta =  async (req,res,next) => {
+    const {VentaId}  = req.params;
 
-    if(!operadorId){
+    if(!VentaId){
         return  res.status(400).send({
             success: false,
             data: {},
-            message:'Operador Id necesario'
+            message:'Venta Id necesario'
         });
     }
 
     try{
-        let data = await OperadorModel.findOneAndUpdate({_id: operadorId},{activo:false},{new:true});
+        let data = await VentaModel.findOneAndUpdate({_id: VentaId},{activo:false},{new:true});
 
         if(!data)
             return res.status(404).send({ 
                 success:false,
                 data: {},
-                message: "Operador no encontrado"
+                message: "Venta no encontrada"
             });
 
         return res.status(204).send();
@@ -146,9 +146,9 @@ const eliminarOperador =  async (req,res,next) => {
 
 
 module.exports = {
-    obtenerOperadores,
-    obtenerOperador,
-    agregarOperador,
-    actualizarOperador,
-    eliminarOperador
+    obtenerVentas,
+    obtenerVenta,
+    agregarVenta,
+    actualizarVenta,
+    eliminarVenta
 };

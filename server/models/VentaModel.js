@@ -12,10 +12,10 @@ const notaVentaSchema = new mongoose.Schema({
     folio:              { type: String},
     concepto:           { type: String },
     liquidacion:        { type: Boolean, default: false},
-    importe:            { type: Double },
-    tipoCambio:         { type: Double },
-    importeMXN:         { type: Double },
-    resto:              { type: Double }
+    importe:            { type: Number },
+    tipoCambio:         { type: Number },
+    importeMXN:         { type: Number },
+    resto:              { type: Number }
 }, { timestamps: false, versionKey: false, _id: false });
 
 const detalleVentaSchema = new mongoose.Schema({
@@ -34,15 +34,15 @@ const ventaSchema = new mongoose.Schema({
    claveReserva:        {type: String},
    telefono:            {type: String},
    email:               {type: String},
-   totalVenta:          {type: Double},
-   totalNeto:           {type: Double},
+   totalVenta:          {type: Number},
+   totalNeto:           {type: Number},
    fechaVenta:          {type: Date},
    fechaLimite:         {type: Date},
    ventaDlls:           {type: Boolean, default: false},
    operador:            operadorSchema,
    detalleViaje:        detalleVentaSchema,
    notasVenta:          [notaVentaSchema],
-   cancelada:           {type: Boolean, default : false}
+   estatusVenta:        {type: String, enum: ["En Proceso", "Tiempo Limite", "Pagada", "Cancelada"]}
 }, {timestamps: true,versionKey: false});
 
 module.exports = mongoose.model('venta', ventaSchema);

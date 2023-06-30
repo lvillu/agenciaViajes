@@ -99,10 +99,10 @@ const login = async (req, res, next) => {
         });
 
         //Con Front End
-        //res.cookie('refresh_token', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000, sameSite: 'None', secure: true });
+        res.cookie('refresh_token', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000, sameSite: 'None', secure: true });
 
         //Con Postman
-        res.cookie('refresh_token', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000 });
+        //res.cookie('refresh_token', refreshToken, { httpOnly: true, maxAge: 24*60*60*1000 });
 
 
         return res.status(200).send({
@@ -128,10 +128,10 @@ const logout = async (req, res, next) => {
 
     if(!user){
         // Con Front End
-        // res.clearCookie("refresh_token", { httpOnly: true, sameSite: 'None', secure: true });
+        res.clearCookie("refresh_token", { httpOnly: true, sameSite: 'None', secure: true });
 
         // Con Postman
-        res.clearCookie("refresh_token", { httpOnly: true });
+        //res.clearCookie("refresh_token", { httpOnly: true });
         return res.sendStatus(204);
     }
 
@@ -139,10 +139,10 @@ const logout = async (req, res, next) => {
     await user.save();
 
     // Con Front End
-    // res.clearCookie("refresh_token", { httpOnly: true, sameSite: 'None', secure: true });
+    res.clearCookie("refresh_token", { httpOnly: true, sameSite: 'None', secure: true });
 
     // Con Postman
-    res.clearCookie("refresh_token", { httpOnly: true });
+    //res.clearCookie("refresh_token", { httpOnly: true });
     return res.sendStatus(204);
 
 };

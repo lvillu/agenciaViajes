@@ -15,6 +15,7 @@ const notaVentaSchema = new mongoose.Schema({
     importe:            { type: Number },
     tipoCambio:         { type: Number },
     importeMXN:         { type: Number },
+    tipoPago:           {type: String, enum: ["Anticipo", "Abono", "Liquidacion"]},
     resto:              { type: Number }
 }, { timestamps: false, versionKey: false, _id: false });
 

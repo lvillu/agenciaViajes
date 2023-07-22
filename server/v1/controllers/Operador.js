@@ -4,7 +4,7 @@ const { OperadorModel }                  = require('../../models');
 const obtenerOperadores =  async (req,res,next) => {
     try{
         let data = await OperadorModel.find({activo:true},
-            {_id:1,nombre:1, siglas:1}).sort({_id:1});
+            {_id:1,nombre:1, nombreContacto:1, emailContacto:1, telefono:1 }).sort({_id:1});
         
         if(!data || data.length == 0)
             return res.status(200).send({ 
@@ -26,6 +26,7 @@ const obtenerOperadores =  async (req,res,next) => {
 
 const obtenerOperador =  async (req,res,next) => {
     const {operadorId}  = req.params;
+
     try{
         let data = await OperadorModel.findOne({_id: operadorId},
             {}).sort({ _id:1 });

@@ -17,7 +17,7 @@ const notaVentaSchema = new mongoose.Schema({
     importeMXN:         { type: Number },
     tipoPago:           {type: String, enum: ["Anticipo", "Abono", "Liquidacion"]},
     resto:              { type: Number }
-}, { timestamps: false, versionKey: false, _id: false });
+}, { timestamps: false, versionKey: false });
 
 const detalleVentaSchema = new mongoose.Schema({
     fechaViaje:         { type: Date},

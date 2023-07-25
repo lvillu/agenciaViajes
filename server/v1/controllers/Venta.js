@@ -72,6 +72,52 @@ const agregarVenta =  async (req,res,next) => {
     }
 };
 
+const agregarNotaVenta =  async (req,res,next) => {
+    const {VentaId}  = req.params;
+    let body = req.body;
+
+    if(Object.keys(body).length == 0) 
+        return res.status(400).send({
+            success: false,
+            data: {},
+            message: "No se esta recibiendo informacion"
+        });
+
+    try{
+
+        let ventaObj = await VentaModel.findOne({_id: VentaId},
+            { notasVenta: 1 }).sort({ _id:1 });
+
+        if(!ventaObj || ventaObj.length == 0)
+            return res.status(200).send({ 
+                success: true,
+                data: {},
+                message: "Venta no encontrada"
+            });
+
+
+        await ventaObj.notasVenta.push(body);
+        const result = await ventaObj.save();
+        
+        if(!result)
+            return res.status(500).send({
+                success: false,
+                data: {},
+                message: "No se pudo agegar la nota de venta"
+            });
+        else
+            return res.status(201).send({
+                success: true,
+                data: result.notasVenta,
+                message: ""
+            });
+    }
+    catch (err) {
+        console.log("Err", err)
+        return res.status(500).send({error:err});
+    }
+};
+
 const actualizarVenta = async(req,res,next) => {
     let update    = req.body;
     let {VentaId}= req.params;
@@ -112,35 +158,54 @@ const actualizarVenta = async(req,res,next) => {
     }
 };
 
-const eliminarVenta =  async (req,res,next) => {
+const actualizarNotaVenta =  async (req,res,next) => {
     const {VentaId}  = req.params;
+    const notaVentaId = req.headers.notaventaid;
+    let body = req.body;
 
-    if(!VentaId){
-        return  res.status(400).send({
+    if(Object.keys(body).length == 0) 
+        return res.status(400).send({
             success: false,
             data: {},
-            message:'Venta Id necesario'
+            message: "No se esta recibiendo informacion"
         });
-    }
 
     try{
-        let data = await VentaModel.findOneAndUpdate({_id: VentaId},{activo:false},{new:true});
 
-        if(!data)
-            return res.status(404).send({ 
-                success:false,
+        let ventaObj = await VentaModel.findOneAndUpdate(
+            {
+                _id: VentaId, "notasVenta._id": notaVentaId
+            },
+            {
+                $set: {
+                    'notasVenta.$': body
+                }
+            },
+            {
+                select: {
+                    notasVenta: {
+                        $elemMatch:
+                            { _id: notaVentaId }
+                    }
+                }
+            });
+
+        if(!ventaObj || ventaObj.length == 0)
+            return res.status(200).send({ 
+                success: true,
                 data: {},
                 message: "Venta no encontrada"
             });
-
-        return res.status(204).send();
+        else
+            return res.status(201).send({
+                success: true,
+                data: ventaObj.notasVenta,
+                message: ""
+            });
     }
     catch (err) {
-        return res.status(500).send({
-            success: true,
-            data: {},
-            message: err
-        });
+        console.log("Err", err)
+        return res.status(500).send({error:err});
     }
 };
 
@@ -149,6 +214,7 @@ module.exports = {
     obtenerVentas,
     obtenerVenta,
     agregarVenta,
+    agregarNotaVenta,
     actualizarVenta,
-    eliminarVenta
+    actualizarNotaVenta
 };

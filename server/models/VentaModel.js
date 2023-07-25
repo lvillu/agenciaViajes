@@ -4,7 +4,7 @@ const mongoose          = require('mongoose');
 
 const operadorSchema = new mongoose.Schema({
     operadorId:             { type: String },
-    name:                   { type: String },
+    nombre:                 { type: String },
 }, { timestamps: false, versionKey: false, _id: false });
 
 const notaVentaSchema = new mongoose.Schema({
@@ -19,7 +19,7 @@ const notaVentaSchema = new mongoose.Schema({
     resto:              { type: Number }
 }, { timestamps: false, versionKey: false });
 
-const detalleVentaSchema = new mongoose.Schema({
+const detalleViajeSchema = new mongoose.Schema({
     fechaViaje:         { type: Date},
     fechaRegreso:       { type: Date},
     horaViaje:          { type: String},
@@ -39,9 +39,9 @@ const ventaSchema = new mongoose.Schema({
    totalNeto:           {type: Number},
    fechaVenta:          {type: Date},
    fechaLimite:         {type: Date},
-   ventaDlls:           {type: Boolean, default: false},
+   ventaDls:            {type: Boolean, default: false},
    operador:            operadorSchema,
-   detalleViaje:        detalleVentaSchema,
+   detalleViaje:        detalleViajeSchema,
    notasVenta:          [notaVentaSchema],
    estatusVenta:        {type: String, enum: ["En Proceso", "Tiempo Limite", "Pagada", "Cancelada"]}
 }, {timestamps: true,versionKey: false});

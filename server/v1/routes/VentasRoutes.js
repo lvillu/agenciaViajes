@@ -17,12 +17,13 @@ router.get('/ventas/venta/:VentaId', authMiddleware, VentaCtrl.obtenerVenta);
 
 router.post('/ventas/venta', authMiddleware, VentaCtrl.agregarVenta);
 
+router.post('/ventas/notaVenta/:VentaId', authMiddleware, VentaCtrl.agregarNotaVenta);
+
 /* PUT Calls */
 
 router.put('/ventas/venta/:VentaId', authMiddleware, VentaCtrl.actualizarVenta);
 
-/*DELETE calls */
+router.put('/ventas/notaVenta/:VentaId', authMiddleware, VentaCtrl.actualizarNotaVenta);
 
-router.delete('/ventas/venta/:VentaId', authMiddleware, VentaCtrl.eliminarVenta);
 
 module.exports = router;

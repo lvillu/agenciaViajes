@@ -3,8 +3,8 @@ const { VentaModel }                  = require('../../models');
 
 const obtenerVentas =  async (req,res,next) => {
     try{
-        let data = await VentaModel.find({activo:true},
-            {_id:1,nombre:1, siglas:1}).sort({_id:1});
+        let data = await VentaModel.find({},
+            { _id:1, titular:1, claveReserva:1, operador:1, detalleViaje: 1 }).sort({_id:1});
         
         if(!data || data.length == 0)
             return res.status(200).send({ 

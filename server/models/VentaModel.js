@@ -26,6 +26,8 @@ const detalleViajeSchema = new mongoose.Schema({
     horaRegreso:        { type: String},
     vuelosRedondos:     { type: Boolean},
     hotel:              { type: String},
+    destino:            { type: String},
+    descripcionViaje:   { type: String},
     todoIncluido:       { type: Boolean},
     translados:         { type: Boolean},
 }, { timestamps: false, versionKey: false, _id: false });

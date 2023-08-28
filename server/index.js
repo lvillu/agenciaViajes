@@ -53,7 +53,7 @@ function listen() {
 function connect() {
 
     const dbConfig = require('./config/db');
-    const options = { keepAlive: 1, useNewUrlParser: true, useUnifiedTopology: true };
+    const options = { keepAlive: true, useNewUrlParser: true, useUnifiedTopology: true };
     const uri =  dbConfig.db.uri;
 
     mongoose.connect(uri, options).catch((err) => {

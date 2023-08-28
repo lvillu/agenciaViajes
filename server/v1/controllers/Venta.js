@@ -61,12 +61,21 @@ const agregarVenta =  async (req,res,next) => {
 
     try{
 
+        /* Informacion complementaria */
+        body.operador.operadorId = body.operador._id;
+        body.fechaVenta = Date.now();
+        body.notaVenta.fecha = Date.now();
+        body.notaVenta.tipoPago = body.notaVenta.resto === 0 ? "Liquidacion" : "Anticipo";
+        body.notasVenta = [body.notaVenta];
+        body.estatusVenta = body.notaVenta.resto === 0 ? "Pagada" : "En Proceso";
+        
         let data = await VentaModel(body).save();
         return res.status(201).send({
             success: true,
             data: data,
             message: ""
         });
+        
     }
     catch (err) {
         return res.status(500).send({error:err});

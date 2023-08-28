@@ -11,25 +11,29 @@ const notaVentaSchema = new mongoose.Schema({
     fecha:              { type: Date },
     folio:              { type: String},
     concepto:           { type: String },
-    liquidacion:        { type: Boolean, default: false},
     importe:            { type: Number },
-    tipoCambio:         { type: Number },
+    tipoCambio:         { type: Number, default: 1 },
     importeMXN:         { type: Number },
     tipoPago:           {type: String, enum: ["Anticipo", "Abono", "Liquidacion"]},
     resto:              { type: Number }
 }, { timestamps: false, versionKey: false });
 
+const hoursSchema = new mongoose.Schema({
+    hours:         { type: Number },
+    minutes:              { type: Number }
+}, { timestamps: false, versionKey: false, _id: false });
+
 const detalleViajeSchema = new mongoose.Schema({
     fechaViaje:         { type: Date},
     fechaRegreso:       { type: Date},
-    horaViaje:          { type: String},
-    horaRegreso:        { type: String},
+    horaViaje:          hoursSchema,
+    horaRegreso:        hoursSchema,
     vuelosRedondos:     { type: Boolean},
     hotel:              { type: String},
     destino:            { type: String},
     descripcionViaje:   { type: String},
     todoIncluido:       { type: Boolean},
-    translados:         { type: Boolean},
+    traslados:          { type: Boolean},
 }, { timestamps: false, versionKey: false, _id: false });
 
 const ventaSchema = new mongoose.Schema({
